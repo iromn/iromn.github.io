@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <LandingPage msg="Coming Soon"/>
-    <img alt="Vue logo" src="../assets/under_dev.jpg">
+    <img class="status" alt="Under Dev" src="../assets/under_dev.jpg">
   </div>
 </template>
 
@@ -16,3 +16,8 @@ export default {
   }
 }
 </script>
+<style scoped>
+  .status{
+    width: 100%;
+  }
+</style>
