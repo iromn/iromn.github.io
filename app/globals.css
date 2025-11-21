@@ -163,10 +163,6 @@ p.text-sm {
   padding: 1rem 1rem;
 }
 
-.carousel-container>div>div:first-child .card-container {
-  margin-left: 1.5rem;
-}
-
 .carousel-info {
   margin-top: 1rem;
 }

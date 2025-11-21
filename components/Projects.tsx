@@ -13,10 +13,11 @@ import { Github, ExternalLink, FileText, ChevronLeft, ChevronRight } from 'lucid
 import Image from 'next/image'
 
 export default function Projects() {
-    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true, align: 'start' })
+    const [emblaRef, emblaApi] = useEmblaCarousel({ loop: false, align: 'start' })
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false)
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState(0)
+    const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
 
     const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
     const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
@@ -30,6 +31,8 @@ export default function Projects() {
 
     useEffect(() => {
         if (!emblaApi) return
+        // eslint-disable-next-line
+        setScrollSnaps(emblaApi.scrollSnapList())
         onSelect()
         emblaApi.on('select', onSelect)
         emblaApi.on('reInit', onSelect)
@@ -139,13 +142,13 @@ export default function Projects() {
 
                         {/* Dots Indicator */}
                         <div className="flex gap-2">
-                            {projects.map((_, index) => (
+                            {scrollSnaps.map((_, index) => (
                                 <button
                                     key={index}
                                     onClick={() => emblaApi && emblaApi.scrollTo(index)}
                                     className={`w-2 h-2 rounded-full transition-all ${index === selectedIndex ? 'bg-cyan-400 w-8' : 'bg-slate-600 hover:bg-slate-500'
                                         }`}
-                                    aria-label={`Go to project ${index + 1}`}
+                                    aria-label={`Go to slide ${index + 1}`}
                                 />
                             ))}
                         </div>

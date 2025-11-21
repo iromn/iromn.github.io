@@ -40,14 +40,14 @@ export default function About() {
                 <motion.div variants={fadeInUp} className="about-me mx-auto space-y-6 text-slate-300 text-base md:text-lg leading-relaxed">
                     <p className="text-center">
                         I'm <span className="text-cyan-400 font-semibold">Nganba Irom</span>, a full-stack software developer
-                        specializing in PHP, Laravel, WordPress, and modern JavaScript frameworks. Across my career, I've worked on
+                        specializing in PHP, CI4 , Laravel, WordPress, and modern JavaScript frameworks. Across my career, I've worked on
                         enterprise-grade systems, complex migrations, AI-enabled apps, payment gateway integrations, and custom
                         plugin development.
                     </p>
                     <p className="text-center">
-                        I love solving real-world problems end-to-end — from designing clean UIs to building scalable backend
-                        systems. I've recently expanded into Next.js, FastAPI, and vector database technologies to build
-                        cutting-edge AI-powered apps.
+                        I enjoy taking a problem from idea to execution — designing clean, usable interfaces and building solid
+                        backends that are fast, scalable, and easy to maintain. Recently, I’ve been diving deeper into Next.js,
+                        FastAPI, and vector databases to create more AI-driven applications.
                     </p>
                     <p className="text-center">
                         I focus heavily on <span className="text-purple-400 font-semibold">performance</span>,{' '}
