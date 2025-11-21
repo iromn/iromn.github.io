@@ -28,7 +28,7 @@ export const projects: Project[] = [
             'Modern UI with Tailwind CSS',
         ],
         github: 'https://github.com/iromn/ci4-cms-starter',
-        image: '/images/ci4-cms-starter.webp',
+        image: '/images/ci4-cms.webp',
         featured: true,
         caseStudy: true,
     },
