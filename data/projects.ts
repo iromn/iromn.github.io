@@ -14,6 +14,25 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        id: 'ci4-cms',
+        title: 'CI4 CMS Starter',
+        description:
+            'A modern, feature-rich Content Management System built with CodeIgniter 4.',
+        longDescription:
+            'This starter kit provides a solid foundation for building content-driven websites with user management, role-based access control, and a flexible blog system. It\'s designed to help developers start projects faster with clean architecture and essential features already in place.',
+        tech: ['CodeIgniter 4', 'Tailwind CSS', 'MySQL', 'CKEditor 5', 'PHP'],
+        achievements: [
+            'Authentication System with session management',
+            'Role-Based Access Control (RBAC)',
+            'Blog Management with rich text editor',
+            'Modern UI with Tailwind CSS',
+        ],
+        github: 'https://github.com/iromn/ci4-cms-starter',
+        image: '/images/ci4-cms-starter.webp',
+        featured: true,
+        caseStudy: true,
+    },
+    {
         id: 'uploadit',
         title: 'UploadiT',
         description:
@@ -48,7 +67,6 @@ export const projects: Project[] = [
         ],
         image: '/images/payment-gateway.webp',
         featured: true,
-        caseStudy: true,
     },
     {
         id: 'hr-portal',

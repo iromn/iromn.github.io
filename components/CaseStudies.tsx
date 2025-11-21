@@ -11,7 +11,19 @@ import { Target, Lightbulb, TrendingUp } from 'lucide-react'
 
 export default function CaseStudies() {
     const caseStudyDetails = {
-        uploadit: {
+        'ci4-cms': {
+            problem:
+                'Developers often need a robust, secure, and modern foundation for content-driven websites, but starting from scratch with CodeIgniter 4 can be time-consuming and lacks modern frontend integration.',
+            solution:
+                'Built a comprehensive CMS starter kit integrating CodeIgniter 4 with Tailwind CSS, featuring a complete authentication system, role-based access control, and a user-friendly admin dashboard.',
+            impact: [
+                'Accelerates development for content-driven sites',
+                'Provides secure, role-based user management out of the box',
+                'Modern, responsive UI with Tailwind CSS integration',
+                'SEO-friendly structure and clean URLs',
+            ],
+        },
+        'uploadit': {
             problem:
                 'Users needed a way to quickly search and query information across multiple documents without manually reading through everything.',
             solution:
@@ -33,18 +45,6 @@ export default function CaseStudies() {
                 '20% increase in user engagement',
                 '50% improvement in backend query performance',
                 'Real-time notifications for HR events',
-            ],
-        },
-        'payment-gateway': {
-            problem:
-                'Multiple clients needed reliable payment processing with support for various gateways, but integration was complex and error-prone.',
-            solution:
-                'Created reusable payment integration modules for Laravel and WordPress supporting Razorpay, Stripe, and PayPal. Implemented secure workflows with PCI compliance and comprehensive error handling.',
-            impact: [
-                '40% faster transaction processing',
-                '30% improvement in user satisfaction',
-                'Zero security incidents',
-                'Reusable modules across 10+ projects',
             ],
         },
     }
