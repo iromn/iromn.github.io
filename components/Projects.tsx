@@ -4,12 +4,9 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import useEmblaCarousel from 'embla-carousel-react'
 import Section from './ui/Section'
-import Card from './ui/Card'
-import Badge from './ui/Badge'
-import Button from './ui/Button'
 import { projects } from '@/data/projects'
 import { fadeInUp } from '@/lib/animations'
-import { Github, ExternalLink, FileText, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Github, ExternalLink, FileText, ChevronLeft, ChevronRight, Terminal } from 'lucide-react'
 import Image from 'next/image'
 
 export default function Projects() {
@@ -31,7 +28,6 @@ export default function Projects() {
 
     useEffect(() => {
         if (!emblaApi) return
-        // eslint-disable-next-line
         setScrollSnaps(emblaApi.scrollSnapList())
         onSelect()
         emblaApi.on('select', onSelect)
@@ -39,63 +35,82 @@ export default function Projects() {
     }, [emblaApi, onSelect])
 
     return (
-        <Section id="projects" className="bg-slate-900/50">
+        <Section id="projects" className="bg-transparent">
             <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }}>
-                <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl lg:text-5xl font-bold mb-12 text-center">
-                    Featured <span className="gradient-text">Projects</span>
-                </motion.h2>
+                <div className="flex items-center justify-center gap-3 mb-12">
+                    <Terminal className="text-[#00F0FF]" size={32} />
+                    <motion.h2 variants={fadeInUp} className="text-3xl md:text-4xl lg:text-5xl font-bold font-mono">
+                        SYSTEM.<span className="text-[#00F0FF]">PROJECTS</span>
+                    </motion.h2>
+                </div>
 
-                <motion.p variants={fadeInUp} className="text-center text-slate-400 mb-12 mx-auto">
-                    Explore my portfolio of projects showcasing full-stack development, AI integration, and enterprise solutions.
+                <motion.p variants={fadeInUp} className="text-center text-slate-400 mb-12 mx-auto font-mono max-w-2xl">
+                    &gt; Accessing project archives...
+                    <br />
+                    &gt; Loaded {projects.length} modules successfully.
                 </motion.p>
 
                 {/* Carousel Container */}
-                <div className="relative">
-                    <div className="overflow-hidden carousel-container" ref={emblaRef}>
+                <div className="relative px-4 md:px-12">
+                    <div className="overflow-hidden" ref={emblaRef}>
                         <div className="flex gap-6">
                             {projects.map((project) => (
                                 <div
                                     key={project.id}
                                     className="flex-[0_0_100%] min-w-0 sm:flex-[0_0_calc(50%-12px)] lg:flex-[0_0_calc(33.333%-16px)]"
                                 >
-                                    <Card className="h-full flex flex-col">
+                                    <motion.div
+                                        whileHover={{ y: -5 }}
+                                        className="h-full flex flex-col bg-[#080A1F]/80 backdrop-blur-md border border-[#00F0FF]/20 rounded-xl overflow-hidden hover:border-[#00F0FF] hover:shadow-[0_0_30px_rgba(163,53,255,0.2)] transition-all duration-300 group"
+                                    >
                                         {/* Project Image */}
-                                        <div className="relative aspect-square mb-4 rounded-lg overflow-hidden bg-slate-800">
+                                        <div className="relative aspect-video overflow-hidden border-b border-[#00F0FF]/20">
+                                            <div className="absolute inset-0 bg-[#00F0FF]/10 z-10 group-hover:bg-transparent transition-colors duration-300" />
                                             <Image
                                                 src={project.image}
                                                 alt={project.title}
                                                 fill
-                                                className="carousel-image object-cover group-hover:scale-110 transition-transform duration-300"
+                                                className="object-cover group-hover:scale-110 transition-transform duration-500"
                                             />
                                         </div>
 
                                         {/* Project Info */}
-                                        <div className="carousel-info flex-grow flex flex-col">
-                                            <h3 className="text-xl md:text-2xl font-bold text-white mb-3">{project.title}</h3>
-                                            <p className="project-description text-slate-400 mb-4 flex-grow text-sm md:text-base leading-relaxed">
+                                        <div className="p-6 flex-grow flex flex-col font-mono">
+                                            <div className="flex justify-between items-start mb-4">
+                                                <h3 className="text-xl font-bold text-white group-hover:text-[#00F0FF] transition-colors">
+                                                    {project.title}
+                                                </h3>
+                                                <div className="text-xs text-[#00F0FF] border border-[#00F0FF] px-2 py-0.5 rounded">
+                                                    v1.0
+                                                </div>
+                                            </div>
+
+                                            <p className="text-slate-400 mb-6 text-sm leading-relaxed flex-grow">
                                                 {project.description}
                                             </p>
 
                                             {/* Tech Stack */}
-                                            <div className="tech-stack flex flex-wrap gap-2 mb-4">
+                                            <div className="flex flex-wrap gap-2 mb-6">
                                                 {project.tech.slice(0, 4).map((tech) => (
-                                                    <Badge key={tech} variant="accent">
+                                                    <span key={tech} className="text-xs text-[#00F0FF] bg-[#00F0FF]/10 px-2 py-1 rounded border border-[#00F0FF]/20">
                                                         {tech}
-                                                    </Badge>
+                                                    </span>
                                                 ))}
                                                 {project.tech.length > 4 && (
-                                                    <Badge variant="default">+{project.tech.length - 4}</Badge>
+                                                    <span className="text-xs text-slate-500 px-2 py-1">
+                                                        +{project.tech.length - 4}
+                                                    </span>
                                                 )}
                                             </div>
 
                                             {/* Links */}
-                                            <div className="project-link flex items-center gap-3 pt-4 border-t border-slate-800">
+                                            <div className="flex items-center gap-4 pt-4 border-t border-[#00F0FF]/20 mt-auto">
                                                 {project.github && (
                                                     <a
                                                         href={project.github}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="text-slate-400 hover:text-cyan-400 transition-colors"
+                                                        className="text-slate-400 hover:text-[#00F0FF] transition-colors"
                                                         aria-label="View on GitHub"
                                                     >
                                                         <Github size={20} />
@@ -106,7 +121,7 @@ export default function Projects() {
                                                         href={project.demo}
                                                         target="_blank"
                                                         rel="noopener noreferrer"
-                                                        className="text-slate-400 hover:text-cyan-400 transition-colors"
+                                                        className="text-slate-400 hover:text-[#00F0FF] transition-colors"
                                                         aria-label="View live demo"
                                                     >
                                                         <ExternalLink size={20} />
@@ -115,53 +130,48 @@ export default function Projects() {
                                                 {project.caseStudy && (
                                                     <a
                                                         href={`#case-study-${project.id}`}
-                                                        className="ml-auto text-sm text-cyan-400 hover:text-cyan-300 transition-colors flex items-center gap-1"
+                                                        className="ml-auto text-xs text-[#00F0FF] hover:text-white transition-colors flex items-center gap-1"
                                                     >
-                                                        <FileText size={16} />
-                                                        Case Study
+                                                        <FileText size={14} />
+                                                        READ_LOGS
                                                     </a>
                                                 )}
                                             </div>
                                         </div>
-                                    </Card>
+                                    </motion.div>
                                 </div>
                             ))}
                         </div>
                     </div>
 
                     {/* Navigation Buttons */}
-                    <div className="flex items-center justify-center gap-4 mt-8">
-                        <button
-                            onClick={scrollPrev}
-                            disabled={!prevBtnEnabled}
-                            className="p-3 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-cyan-400 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-                            aria-label="Previous project"
-                        >
-                            <ChevronLeft size={24} />
-                        </button>
+                    <button
+                        onClick={scrollPrev}
+                        disabled={!prevBtnEnabled}
+                        className="absolute left-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[#080A1F]/80 border border-[#00F0FF]/30 text-[#00F0FF] hover:bg-[#00F0FF] hover:text-white disabled:opacity-0 transition-all"
+                    >
+                        <ChevronLeft size={24} />
+                    </button>
 
-                        {/* Dots Indicator */}
-                        <div className="flex gap-2">
-                            {scrollSnaps.map((_, index) => (
-                                <button
-                                    key={index}
-                                    onClick={() => emblaApi && emblaApi.scrollTo(index)}
-                                    className={`w-2 h-2 rounded-full transition-all ${index === selectedIndex ? 'bg-cyan-400 w-8' : 'bg-slate-600 hover:bg-slate-500'
-                                        }`}
-                                    aria-label={`Go to slide ${index + 1}`}
-                                />
-                            ))}
-                        </div>
+                    <button
+                        onClick={scrollNext}
+                        disabled={!nextBtnEnabled}
+                        className="absolute right-0 top-1/2 -translate-y-1/2 p-2 rounded-full bg-[#080A1F]/80 border border-[#00F0FF]/30 text-[#00F0FF] hover:bg-[#00F0FF] hover:text-white disabled:opacity-0 transition-all"
+                    >
+                        <ChevronRight size={24} />
+                    </button>
+                </div>
 
+                {/* Dots Indicator */}
+                <div className="flex justify-center gap-2 mt-8">
+                    {scrollSnaps.map((_, index) => (
                         <button
-                            onClick={scrollNext}
-                            disabled={!nextBtnEnabled}
-                            className="p-3 rounded-full bg-slate-800 border border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-cyan-400 disabled:opacity-30 disabled:cursor-not-allowed transition-all"
-                            aria-label="Next project"
-                        >
-                            <ChevronRight size={24} />
-                        </button>
-                    </div>
+                            key={index}
+                            onClick={() => emblaApi && emblaApi.scrollTo(index)}
+                            className={`h-1 transition-all duration-300 ${index === selectedIndex ? 'w-8 bg-[#00F0FF]' : 'w-2 bg-slate-700 hover:bg-slate-600'}`}
+                            aria-label={`Go to slide ${index + 1}`}
+                        />
+                    ))}
                 </div>
             </motion.div>
         </Section>

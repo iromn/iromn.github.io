@@ -5,36 +5,17 @@ export default function Footer() {
     const currentYear = new Date().getFullYear()
 
     return (
-        <footer className="bg-slate-950 border-t border-slate-800 py-4">
+        <footer className="bg-[#080A1F] border-t border-[#00F0FF]/20 py-8">
             <div className="mx-auto px-4 md:px-8">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-1 md:gap-4 footer-copyright">
+                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
                     {/* Copyright */}
-                    <p className="text-slate-400 text-sm">
-                        © {currentYear} Nganba Irom. All rights reserved.
+                    <p className="text-slate-500 text-xs font-mono">
+                        © {currentYear} NGANBA_IROM. SYSTEM_ONLINE.
                     </p>
 
-                    {/* Social Links */}
-                    <div className="flex items-center gap-6">
-                        {socialLinks.map((link) => {
-                            const Icon = link.icon
-                            return (
-                                <a
-                                    key={link.name}
-                                    href={link.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-slate-400 hover:text-cyan-400 transition-colors duration-200"
-                                    aria-label={link.name}
-                                >
-                                    <Icon size={20} />
-                                </a>
-                            )
-                        })}
-                    </div>
-
                     {/* Built With */}
-                    <p className="text-slate-500 text-xs font-mono footer-text text-center">
-                        Built with Next.js + TypeScript + Tailwind
+                    <p className="text-slate-600 text-[10px] font-mono text-center">
+                        NEXT.JS // TAILWIND // FRAMER_MOTION // THREE.JS
                     </p>
                 </div>
             </div>

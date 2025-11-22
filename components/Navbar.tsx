@@ -120,27 +120,8 @@ export default function Navbar() {
                         Nganba Irom
                     </a>
 
-                    {/* Desktop Navigation */}
-                    <div className="hidden md:flex items-center gap-8">
-                        {navLinks.map((link) => {
-                            const isActive = activeSection === link.href.replace('#', '')
-                            return (
-                                <a
-                                    key={link.name}
-                                    href={link.href}
-                                    onClick={(e) => {
-                                        e.preventDefault()
-                                        scrollToSection(link.href)
-                                    }}
-                                    className={`transition-colors duration-200 cursor-pointer ${isActive
-                                        ? 'text-cyan-400 font-semibold'
-                                        : 'text-slate-300 hover:text-cyan-400'
-                                        }`}
-                                >
-                                    {link.name}
-                                </a>
-                            )
-                        })}
+                    {/* Desktop Navigation - Hidden since we use FloatingDock */}
+                    <div className="hidden md:hidden items-center gap-8">
                     </div>
 
                     {/* Mobile Menu Button */}
