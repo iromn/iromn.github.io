@@ -7,7 +7,7 @@ export default function Footer() {
     return (
         <footer className="bg-[#080A1F] border-t border-[#00F0FF]/20 py-8">
             <div className="mx-auto px-4 md:px-8">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-4">
+                <div className="md:ml-20 flex flex-col md:flex-row items-center justify-between gap-4">
                     {/* Copyright */}
                     <p className="text-slate-500 text-xs font-mono">
                         © {currentYear} NGANBA_IROM. SYSTEM_ONLINE.
