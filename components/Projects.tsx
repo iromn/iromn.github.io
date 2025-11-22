@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useRef } from 'react'
 import { motion } from 'framer-motion'
 import useEmblaCarousel from 'embla-carousel-react'
 import Section from './ui/Section'
@@ -15,9 +15,66 @@ export default function Projects() {
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false)
     const [selectedIndex, setSelectedIndex] = useState(0)
     const [scrollSnaps, setScrollSnaps] = useState<number[]>([])
+    const audioCtxRef = useRef<AudioContext | null>(null)
 
-    const scrollPrev = useCallback(() => emblaApi && emblaApi.scrollPrev(), [emblaApi])
-    const scrollNext = useCallback(() => emblaApi && emblaApi.scrollNext(), [emblaApi])
+    // Initialize audio context
+    useEffect(() => {
+        const initAudio = () => {
+            try {
+                const AudioContext = window.AudioContext || (window as any).webkitAudioContext
+                if (AudioContext && !audioCtxRef.current) {
+                    audioCtxRef.current = new AudioContext()
+                }
+            } catch (e) {
+                console.error('Audio init failed', e)
+            }
+        }
+
+        document.addEventListener('click', initAudio, { once: true })
+        return () => document.removeEventListener('click', initAudio)
+    }, [])
+
+    const playSlideSound = () => {
+        try {
+            if (!audioCtxRef.current) return
+            const ctx = audioCtxRef.current
+            const osc = ctx.createOscillator()
+            const gain = ctx.createGain()
+
+            osc.connect(gain)
+            gain.connect(ctx.destination)
+
+            const now = ctx.currentTime
+
+            // Pleasant ascending chime (like a gentle notification)
+            osc.type = 'sine'
+            osc.frequency.setValueAtTime(600, now)
+            osc.frequency.setValueAtTime(800, now + 0.08)
+
+            gain.gain.setValueAtTime(0.025, now)
+            gain.gain.setValueAtTime(0.025, now + 0.08)
+            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2)
+
+            osc.start(now)
+            osc.stop(now + 0.2)
+        } catch (e) {
+            // Silently fail
+        }
+    }
+
+    const scrollPrev = useCallback(() => {
+        if (emblaApi) {
+            emblaApi.scrollPrev()
+            playSlideSound()
+        }
+    }, [emblaApi])
+
+    const scrollNext = useCallback(() => {
+        if (emblaApi) {
+            emblaApi.scrollNext()
+            playSlideSound()
+        }
+    }, [emblaApi])
 
     const onSelect = useCallback(() => {
         if (!emblaApi) return

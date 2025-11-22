@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import Section from './ui/Section'
 import { caseStudyProjects } from '@/data/projects'
@@ -14,6 +14,68 @@ export default function CaseStudies() {
     const [showFiles, setShowFiles] = useState(false)
     const [isClosing, setIsClosing] = useState(false)
     const [closingStep, setClosingStep] = useState(0)
+    const audioCtxRef = useRef<AudioContext | null>(null)
+
+    // Initialize audio context
+    useEffect(() => {
+        const initAudio = () => {
+            try {
+                const AudioContext = window.AudioContext || (window as any).webkitAudioContext
+                if (AudioContext && !audioCtxRef.current) {
+                    audioCtxRef.current = new AudioContext()
+                }
+            } catch (e) {
+                console.error('Audio init failed', e)
+            }
+        }
+
+        document.addEventListener('click', initAudio, { once: true })
+        return () => document.removeEventListener('click', initAudio)
+    }, [])
+
+    const playSound = (type: 'click' | 'close') => {
+        try {
+            if (!audioCtxRef.current) return
+            const ctx = audioCtxRef.current
+            const osc = ctx.createOscillator()
+            const gain = ctx.createGain()
+
+            osc.connect(gain)
+            gain.connect(ctx.destination)
+
+            const now = ctx.currentTime
+
+            if (type === 'click') {
+                // Three-tone ascending sine wave
+                osc.type = 'sine'
+                osc.frequency.setValueAtTime(400, now)
+                osc.frequency.setValueAtTime(700, now + 0.04)
+                osc.frequency.setValueAtTime(900, now + 0.08)
+
+                gain.gain.setValueAtTime(0.05, now)
+                gain.gain.setValueAtTime(0.05, now + 0.08)
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12)
+
+                osc.start(now)
+                osc.stop(now + 0.12)
+            } else if (type === 'close') {
+                // Three-tone descending sine wave
+                osc.type = 'sine'
+                osc.frequency.setValueAtTime(900, now)
+                osc.frequency.setValueAtTime(700, now + 0.04)
+                osc.frequency.setValueAtTime(400, now + 0.08)
+
+                gain.gain.setValueAtTime(0.04, now)
+                gain.gain.setValueAtTime(0.04, now + 0.08)
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12)
+
+                osc.start(now)
+                osc.stop(now + 0.12)
+            }
+        } catch (e) {
+            // Silently fail
+        }
+    }
 
     const caseStudyDetails = {
         'ci4-cms': {
@@ -64,6 +126,7 @@ export default function CaseStudies() {
     ]
 
     const handleFileAccess = (index: number) => {
+        playSound('click')
         setIsLoading(true)
         setLoadingStep(0)
         setShowFiles(false)
@@ -87,6 +150,7 @@ export default function CaseStudies() {
     }
 
     const handleCloseFile = () => {
+        playSound('close')
         setIsClosing(true)
         setClosingStep(0)
 

@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion'
 import { useEffect, useState } from 'react'
 import { User, Code, Briefcase, Layers, FileText, Mail } from 'lucide-react'
+import { getAudioContext } from '@/lib/audioContext'
 
 const links = [
     { name: 'ABOUT', href: '#about', icon: User },
@@ -15,6 +16,46 @@ const links = [
 
 export default function FloatingDock() {
     const [activeSection, setActiveSection] = useState('')
+
+    const playSound = (type: 'hover' | 'click') => {
+        try {
+            const ctx = getAudioContext()
+            if (!ctx) return
+
+            const osc = ctx.createOscillator()
+            const gain = ctx.createGain()
+
+            osc.connect(gain)
+            gain.connect(ctx.destination)
+
+            const now = ctx.currentTime
+
+            if (type === 'hover') {
+                // Subtle hover blip
+                osc.type = 'sine'
+                osc.frequency.setValueAtTime(1000, now)
+
+                gain.gain.setValueAtTime(0.02, now)
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05)
+
+                osc.start(now)
+                osc.stop(now + 0.05)
+            } else if (type === 'click') {
+                // Quick navigation chirp
+                osc.type = 'sine'
+                osc.frequency.setValueAtTime(1200, now)
+                osc.frequency.setValueAtTime(1400, now + 0.03)
+
+                gain.gain.setValueAtTime(0.04, now)
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06)
+
+                osc.start(now)
+                osc.stop(now + 0.06)
+            }
+        } catch (e) {
+            // Silently fail if audio doesn't work
+        }
+    }
 
     useEffect(() => {
         const observer = new IntersectionObserver(
@@ -50,6 +91,8 @@ export default function FloatingDock() {
                         <a
                             key={link.name}
                             href={link.href}
+                            onMouseEnter={() => playSound('hover')}
+                            onClick={() => playSound('click')}
                             className={`relative flex items-center gap-4 p-3 rounded-lg transition-all duration-300 group/item ${isActive
                                 ? 'bg-[#00F0FF]/20 border border-[#00F0FF] text-white shadow-[0_0_15px_rgba(163,53,255,0.3)]'
                                 : 'text-slate-400 hover:text-white hover:bg-[#00F0FF]/10 border border-transparent'
