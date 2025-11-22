@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { motion } from 'framer-motion'
-import { Briefcase, Terminal } from 'lucide-react'
+import { Briefcase, Terminal, Github, Linkedin, Mail } from 'lucide-react'
 import Button from './ui/Button'
 import HeroScene from './HeroScene'
 
@@ -50,7 +50,7 @@ export default function Hero() {
                         transition={{ delay: 0.4 }}
                         className="text-xl sm:text-2xl md:text-3xl font-mono text-slate-300 mb-8 px-4 max-w-4xl"
                     >
-                        &lt;FULL_STACK_DEVELOPER /&gt;
+                        &lt;FULL_STACK_DEVELOPER | AI_ENTHUSIAST /&gt;
                     </motion.h2>
 
                     {/* Description */}
@@ -60,9 +60,9 @@ export default function Hero() {
                         transition={{ delay: 0.5 }}
                         className="text-base md:text-lg text-slate-400 mb-10 max-w-2xl mx-auto px-4 leading-relaxed font-mono"
                     >
-                        Architecting scalable digital solutions.
+                        Crafting scalable, modern web applications from robust backend architectures to seamless frontend experiences.
                         <br />
-                        Specialized in modern web technologies and AI integration.
+                        Specializing in the Laravel/PHP ecosystem, WordPress, and cutting-edge JavaScript frameworks.
                     </motion.p>
 
                     {/* CTA Buttons */}
@@ -80,11 +80,40 @@ export default function Hero() {
                                     element.scrollIntoView({ behavior: 'smooth' });
                                 }
                             }}
-                            className="w-full sm:w-auto btn-container cursor-pointer group"
+                            className="w-full sm:w-auto btn-container cursor-pointer group bg-[#00F0FF]/10 border-2 border-[#00F0FF]/30 hover:border-[#00F0FF] hover:bg-[#00F0FF]/20 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300"
                         >
-                            <Terminal size={20} className="group-hover:text-[#00F0FF] transition-colors" />
-                            EXECUTE_PROJECTS
+                            <Terminal size={20} className="text-[#00F0FF]" />
+                            <span className="text-white">EXECUTE_PROJECTS</span>
                         </Button>
+
+                        {/* Social Media Buttons */}
+                        <div className="flex items-center gap-3">
+                            <a
+                                href="https://github.com/iromn"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-11 h-11 flex items-center justify-center rounded-lg bg-[#00F0FF]/10 border-2 border-[#00F0FF]/30 hover:border-[#00F0FF] hover:bg-[#00F0FF]/20 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300 group"
+                                aria-label="GitHub"
+                            >
+                                <Github size={20} className="text-[#00F0FF]" />
+                            </a>
+                            <a
+                                href="https://www.linkedin.com/in/nganba-irom/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="w-11 h-11 flex items-center justify-center rounded-lg bg-[#00F0FF]/10 border-2 border-[#00F0FF]/30 hover:border-[#00F0FF] hover:bg-[#00F0FF]/20 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300 group"
+                                aria-label="LinkedIn"
+                            >
+                                <Linkedin size={20} className="text-[#00F0FF]" />
+                            </a>
+                            <a
+                                href="mailto:nganba.irom47@gmail.com"
+                                className="w-11 h-11 flex items-center justify-center rounded-lg bg-[#00F0FF]/10 border-2 border-[#00F0FF]/30 hover:border-[#00F0FF] hover:bg-[#00F0FF]/20 hover:shadow-[0_0_20px_rgba(0,240,255,0.3)] transition-all duration-300 group"
+                                aria-label="Email"
+                            >
+                                <Mail size={20} className="text-[#00F0FF]" />
+                            </a>
+                        </div>
                     </motion.div>
                 </motion.div>
             </div>

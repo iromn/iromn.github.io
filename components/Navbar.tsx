@@ -85,28 +85,11 @@ export default function Navbar() {
     }, [])
 
 
-    const scrollToSection = (href: string) => {
-        setIsOpen(false)
-        const elementId = href.replace('#', '')
-
-        // Small delay to allow mobile menu to close first
-        setTimeout(() => {
-            const element = document.getElementById(elementId)
-            if (element) {
-                const elementPosition = element.getBoundingClientRect().top + window.pageYOffset
-                const offsetPosition = elementPosition - 50
-                window.scrollTo({
-                    top: offsetPosition,
-                    behavior: 'smooth'
-                })
-            }
-        }, 100)
-    }
 
 
     return (
         <nav
-            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${mounted && scrolled ? 'bg-slate-950/90 backdrop-blur-lg border-b border-slate-800' : 'bg-transparent'
+            className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${mounted && scrolled ? 'bg-[#0a0e27]/95 backdrop-blur-lg border-b border-[#00F0FF]/30' : 'bg-transparent'
                 }`}
         >
             <div className="nav-bar mx-auto px-4 md:px-8">
@@ -114,7 +97,7 @@ export default function Navbar() {
                     {/* Logo */}
                     <a
                         href="#"
-                        className={`text-xl font-bold gradient-text transition-opacity duration-300 ${scrolled ? 'opacity-100' : 'opacity-0 pointer-events-none'
+                        className={`text-xl font-bold font-mono transition-opacity duration-300 ${scrolled ? 'opacity-100 text-[#00F0FF]' : 'opacity-0 pointer-events-none'
                             }`}
                     >
                         Nganba Irom
@@ -127,7 +110,7 @@ export default function Navbar() {
                     {/* Mobile Menu Button */}
                     <button
                         onClick={() => setIsOpen(!isOpen)}
-                        className="md:hidden text-slate-300 hover:text-cyan-400"
+                        className="md:hidden text-[#00F0FF] hover:text-cyan-300 transition-colors"
                         aria-label="Toggle menu"
                     >
                         {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -142,7 +125,7 @@ export default function Navbar() {
                         initial={{ opacity: 0, height: 0 }}
                         animate={{ opacity: 1, height: 'auto' }}
                         exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden bg-slate-900 border-b border-slate-800"
+                        className="md:hidden bg-[#0a0e27]/98 backdrop-blur-lg border-b border-[#00F0FF]/30"
                     >
                         <div className="px-4 py-4 space-y-3">
                             {navLinks.map((link) => {
@@ -151,13 +134,10 @@ export default function Navbar() {
                                     <a
                                         key={link.name}
                                         href={link.href}
-                                        onClick={(e) => {
-                                            e.preventDefault()
-                                            scrollToSection(link.href)
-                                        }}
-                                        className={`block transition-colors duration-200 py-2 cursor-pointer mobile-navbar-item ${isActive
-                                            ? 'text-cyan-400 font-semibold'
-                                            : 'text-slate-300 hover:text-cyan-400'
+                                        onClick={() => setIsOpen(false)}
+                                        className={`block transition-all duration-200 py-2 px-3 rounded cursor-pointer font-mono ${isActive
+                                            ? 'text-[#00F0FF] font-semibold bg-[#00F0FF]/10 border-l-2 border-[#00F0FF]'
+                                            : 'text-slate-300 hover:text-[#00F0FF] hover:bg-[#00F0FF]/5'
                                             }`}
                                     >
                                         {link.name}
