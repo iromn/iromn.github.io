@@ -1,0 +1,4 @@
+User-Agent: *
+Allow: /
+
+Sitemap: https://iromn.github.io/sitemap.xml
