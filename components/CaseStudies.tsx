@@ -52,8 +52,8 @@ export default function CaseStudies() {
                 osc.frequency.setValueAtTime(700, now + 0.04)
                 osc.frequency.setValueAtTime(900, now + 0.08)
 
-                gain.gain.setValueAtTime(0.05, now)
-                gain.gain.setValueAtTime(0.05, now + 0.08)
+                gain.gain.setValueAtTime(0.2, now)
+                gain.gain.setValueAtTime(0.2, now + 0.08)
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12)
 
                 osc.start(now)
@@ -65,8 +65,8 @@ export default function CaseStudies() {
                 osc.frequency.setValueAtTime(700, now + 0.04)
                 osc.frequency.setValueAtTime(400, now + 0.08)
 
-                gain.gain.setValueAtTime(0.04, now)
-                gain.gain.setValueAtTime(0.04, now + 0.08)
+                gain.gain.setValueAtTime(0.15, now)
+                gain.gain.setValueAtTime(0.15, now + 0.08)
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12)
 
                 osc.start(now)

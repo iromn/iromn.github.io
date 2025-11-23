@@ -35,7 +35,7 @@ export default function FloatingDock() {
                 osc.type = 'sine'
                 osc.frequency.setValueAtTime(1000, now)
 
-                gain.gain.setValueAtTime(0.02, now)
+                gain.gain.setValueAtTime(0.1, now)
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05)
 
                 osc.start(now)
@@ -46,7 +46,7 @@ export default function FloatingDock() {
                 osc.frequency.setValueAtTime(1200, now)
                 osc.frequency.setValueAtTime(1400, now + 0.03)
 
-                gain.gain.setValueAtTime(0.04, now)
+                gain.gain.setValueAtTime(0.2, now)
                 gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06)
 
                 osc.start(now)

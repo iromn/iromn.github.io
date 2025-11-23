@@ -51,8 +51,8 @@ export default function Projects() {
             osc.frequency.setValueAtTime(600, now)
             osc.frequency.setValueAtTime(800, now + 0.08)
 
-            gain.gain.setValueAtTime(0.025, now)
-            gain.gain.setValueAtTime(0.025, now + 0.08)
+            gain.gain.setValueAtTime(0.15, now)
+            gain.gain.setValueAtTime(0.15, now + 0.08)
             gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2)
 
             osc.start(now)
