@@ -4,6 +4,7 @@ let globalAudioContext: AudioContext | null = null
 export const getAudioContext = (): AudioContext | null => {
     if (!globalAudioContext && typeof window !== 'undefined') {
         try {
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const AudioContext = window.AudioContext || (window as any).webkitAudioContext
             if (AudioContext) {
                 globalAudioContext = new AudioContext()

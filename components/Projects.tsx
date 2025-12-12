@@ -21,6 +21,7 @@ export default function Projects() {
     useEffect(() => {
         const initAudio = () => {
             try {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const AudioContext = window.AudioContext || (window as any).webkitAudioContext
                 if (AudioContext && !audioCtxRef.current) {
                     audioCtxRef.current = new AudioContext()
@@ -85,6 +86,7 @@ export default function Projects() {
 
     useEffect(() => {
         if (!emblaApi) return
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setScrollSnaps(emblaApi.scrollSnapList())
         onSelect()
         emblaApi.on('select', onSelect)

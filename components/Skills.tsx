@@ -5,9 +5,9 @@ import { motion } from 'framer-motion'
 import Section from './ui/Section'
 import { skillsByCategory } from '@/data/skills'
 import { staggerContainer, fadeInUp } from '@/lib/animations'
-import { Cpu, Code, Database, Wrench } from 'lucide-react'
+import { Cpu, Code, Database, Wrench, type LucideIcon } from 'lucide-react'
 
-const icons: Record<string, any> = {
+const icons: Record<string, LucideIcon> = {
     "Frontend": Code,
     "Backend": Database,
     "Tools": Wrench,
