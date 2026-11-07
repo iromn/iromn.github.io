@@ -5,24 +5,27 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "export": "next build",
     "start": "next start",
     "lint": "eslint",
-    "deploy": "next build && gh-pages -d out"
+    "typecheck": "tsc --noEmit",
+    "images": "node scripts/optimize-images.mjs",
+    "social": "node --disable-warning=MODULE_TYPELESS_PACKAGE_JSON scripts/generate-social.mts",
+    "prebuild": "npm run social",
+    "predev": "npm run social",
+    "serve": "node scripts/serve-static.mjs out 4174"
   },
   "dependencies": {
-    "@react-three/drei": "^10.7.7",
-    "@react-three/fiber": "^9.4.0",
-    "@types/three": "^0.181.0",
+    "@phosphor-icons/react": "^2.1.10",
     "clsx": "^2.1.1",
-    "embla-carousel-react": "^8.6.0",
-    "framer-motion": "^12.23.24",
-    "lucide-react": "^0.554.0",
+    "geist": "^1.5.1",
+    "gsap": "^3.13.0",
+    "lenis": "^1.3.11",
+    "motion": "^12.23.24",
     "next": "^16.0.10",
     "react": "19.2.0",
     "react-dom": "19.2.0",
-    "tailwind-merge": "^3.4.0",
-    "three": "^0.181.2"
+    "simple-icons": "^15.17.0",
+    "tailwind-merge": "^3.4.0"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -31,7 +34,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.0.3",
-    "gh-pages": "^6.3.0",
+    "sharp": "^0.34.5",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

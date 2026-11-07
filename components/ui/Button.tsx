@@ -1,31 +1,44 @@
-import React from 'react'
+import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
+import SectionLink from './SectionLink'
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-    variant?: 'primary' | 'secondary' | 'ghost'
-    children: React.ReactNode
+type Variant = 'primary' | 'secondary'
+
+const base =
+    'inline-flex h-12 shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full px-6 text-[15px] font-medium transition-[background-color,color,border-color,transform] duration-300 ease-out-expo active:scale-[0.98]'
+
+const variants: Record<Variant, string> = {
+    primary: 'bg-accent text-accent-ink hover:bg-ink hover:text-bg',
+    secondary: 'border border-line text-ink hover:border-ink',
 }
 
-export default function Button({
-    variant = 'primary',
-    className,
-    children,
-    ...props
-}: ButtonProps) {
-    const baseStyles =
-        'px-6 py-3 rounded-lg font-medium transition-all duration-300 inline-flex items-center gap-2'
+type Props = {
+    href: string
+    children: ReactNode
+    variant?: Variant
+    className?: string
+}
 
-    const variants = {
-        primary:
-            'bg-gradient-to-r from-cyan-500 to-purple-500 hover:from-cyan-400 hover:to-purple-400 text-white shadow-lg hover:shadow-cyan-500/50 hover:scale-105',
-        secondary:
-            'border-2 border-cyan-500 text-cyan-500 hover:bg-cyan-500 hover:text-slate-950 hover:scale-105',
-        ghost: 'text-slate-300 hover:text-cyan-400 hover:bg-slate-800',
+/** Pill-shaped link button. Internal "/#section" links smooth-scroll via SectionLink. */
+export default function Button({ href, children, variant = 'primary', className }: Props) {
+    const classes = cn(base, variants[variant], className)
+
+    if (href.startsWith('/#') || href.startsWith('#')) {
+        return (
+            <SectionLink href={href} className={classes}>
+                {children}
+            </SectionLink>
+        )
     }
 
+    const external = href.startsWith('http')
     return (
-        <button className={cn(baseStyles, variants[variant], className)} {...props}>
+        <a
+            href={href}
+            className={classes}
+            {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        >
             {children}
-        </button>
+        </a>
     )
 }

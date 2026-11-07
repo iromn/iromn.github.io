@@ -1,0 +1,8 @@
+#!/bin/sh
+# Rejects commit messages that mention AI assistants. All commits in this repo
+# are authored by Nganba Irom only. Enable with: git config core.hooksPath .githooks
+# File names (CLAUDE.md, .claude/) are ignored so they can still be referenced.
+if sed -e 's/CLAUDE\.md//g' -e 's#\.claude/\{0,1\}##g' "$1" | grep -qiE 'claude|anthropic|co-authored-by|generated with'; then
+  echo "commit-msg: message mentions an AI assistant or co-author trailer. Remove it and commit again." >&2
+  exit 1
+fi
