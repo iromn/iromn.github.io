@@ -45,3 +45,6 @@ next-env.d.ts
 /public/og/
 /public/icon.png
 /public/apple-icon.png
+
+# personal resume source, contains contact details
+/resume.tex
