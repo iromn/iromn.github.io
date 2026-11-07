@@ -105,7 +105,7 @@ Every motion has a stated job:
 7. **About:** short bio, portrait, the toolbelt. The toolbelt is the page's only marquee (real logos from Simple Icons).
 8. **Testimonials:** up to 3 short quotes. Hidden until real quotes exist.
 9. **FAQ:** short accordion.
-10. **Contact:** project brief form (name, email, service, budget, timeline, message) plus direct email. Full loading, success and error states.
+10. **Contact:** project brief form (name, email, service, timeline, message) plus direct email. Full loading, success and error states.
 
 No two sections share a layout family. Eyebrow labels used at most once every three sections.
 

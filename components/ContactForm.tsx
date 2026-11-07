@@ -123,11 +123,8 @@ export default function ContactForm() {
                         <FormField label="Email" error={errors.email}>
                             {(props) => <input {...props} name="email" type="email" autoComplete="email" className={inputClass} />}
                         </FormField>
-                        <FormField label="What do you need?" error={errors.service} className="sm:col-span-2">
+                        <FormField label="What do you need?" error={errors.service}>
                             {(props) => <Select {...props} name="service" options={contact.serviceOptions} />}
-                        </FormField>
-                        <FormField label="Budget" optional>
-                            {(props) => <Select {...props} name="budget" options={contact.budgetOptions} />}
                         </FormField>
                         <FormField label="Timeline" optional>
                             {(props) => <Select {...props} name="timeline" options={contact.timelineOptions} />}

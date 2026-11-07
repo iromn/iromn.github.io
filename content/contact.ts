@@ -7,8 +7,6 @@ export const contact = {
     // [CONFIRM] response time
     intro: "Tell me what you're building. I reply to every enquiry within two working days.",
     serviceOptions: [...services.map((service) => service.title), 'Something else'],
-    // [CONFIRM] ranges and currency
-    budgetOptions: ['Under $2,000', '$2,000 to $5,000', '$5,000 to $15,000', '$15,000 and up', 'Not sure yet'],
     timelineOptions: ['As soon as possible', 'Within a month', 'In 1 to 3 months', 'Flexible'],
     submit: 'Send brief',
     sending: 'Sending',

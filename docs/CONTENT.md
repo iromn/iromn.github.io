@@ -141,7 +141,7 @@ Hidden until real quotes exist. Format: max 3 lines, name, role, company. **[NEE
 
 - **Headline:** Start a project
 - **Intro:** Tell me what you're building. I reply to every enquiry within two working days. **[CONFIRM]**
-- **Form fields:** Name · Email · What do you need? (select a service) · Budget (select a range) **[CONFIRM ranges and currency]** · Timeline (select) · Project details
+- **Form fields:** Name · Email · What do you need? (select a service) · Timeline (select) · Project details
 - **Submit label:** Send brief
 - **Success:** Thanks, your brief is in. I'll reply within two working days.
 - **Error:** Something went wrong sending that. Please try again or email me directly.
