@@ -230,6 +230,14 @@ details[open] > .faq-answer {
 
 .hero-grid--lit {
   --grid-line: color-mix(in srgb, var(--accent) 38%, transparent);
+  /* Full strength wherever the spotlight goes; the spotlight's own mask is the edge. */
+  mask-image: none;
+}
+
+/* The spotlight's soft edge. Static: the element moves with a transform instead of
+   the gradient being redrawn at the pointer, so it never repaints. */
+.hero-spot {
+  mask-image: radial-gradient(circle closest-side, #000 0%, transparent 70%);
 }
 
 /* Kinetic headings (components/motion/SplitHeading.tsx): words rise out of a mask in turn. */

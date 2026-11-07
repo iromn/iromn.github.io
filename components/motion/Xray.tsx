@@ -12,7 +12,6 @@ import {
 } from 'react'
 import {
     motion,
-    useMotionTemplate,
     useMotionValue,
     useReducedMotion,
     useScroll,
@@ -25,9 +24,14 @@ import { Blueprint } from '@phosphor-icons/react'
 /*
  * Hero x-ray lens. The headline renders twice: the real <h1> (Surface) and an
  * aria-hidden copy (Engine) drawn as outlines on a blueprint grid, annotated with
- * measurements read from the live page. A circular mask on the Engine layer follows
- * the pointer. All per-frame values are motion values, so moving the lens never
- * re-renders React.
+ * measurements read from the live page. The Engine copy is seen through a circular
+ * window that follows the pointer 1:1.
+ *
+ * The window is a fixed-size circle moved and scaled with transforms, and the Engine
+ * copy inside it is moved and scaled the opposite way, so it stays pinned over the
+ * headline. Everything per-frame is a transform on a composited layer: no animated
+ * mask-image, so moving or opening the lens never repaints the outlined type. All
+ * per-frame values are motion values, so it never re-renders React either.
  */
 
 const LENS_RADIUS = 150
@@ -77,15 +81,11 @@ export function XrayHeadline({ lines }: { lines: readonly string[] }) {
     const [dims, setDims] = useState<Dims[]>([])
     const [spec, setSpec] = useState<Spec | null>(null)
 
-    // Raw pointer position, smoothed by springs for the lens itself.
-    const rawX = useMotionValue(0)
-    const rawY = useMotionValue(0)
-    const x = useSpring(rawX, { stiffness: 420, damping: 40 })
-    const y = useSpring(rawY, { stiffness: 420, damping: 40 })
-    const radius = useSpring(0, { stiffness: 180, damping: 26 })
-    // The spring can settle a hair below zero; clamp so the gradient stays valid.
-    const outer = useTransform(radius, (r) => Math.max(0, r))
-    const inner = useTransform(radius, (r) => Math.max(0, r - 1))
+    // Pointer position, tracked 1:1. Only the lens opening and closing is sprung, and
+    // stiffly enough (critically damped) to settle in about a sixth of a second.
+    const x = useMotionValue(0)
+    const y = useMotionValue(0)
+    const radius = useSpring(0, { stiffness: 500, damping: 45 })
 
     // Scrolling away opens a second lens from the bottom edge, so the headline turns
     // into its Engine view as the hero leaves the screen. Reduced motion switches it (and
@@ -93,19 +93,17 @@ export function XrayHeadline({ lines }: { lines: readonly string[] }) {
     // rendering: the server cannot know the preference, so that made hydration disagree.
     const { scrollY } = useScroll()
     const scrollMotion = useMotionValue(1)
-    const stageDiagonal = useMotionValue(1600)
+    const stageWidth = useMotionValue(1400)
+    const stageHeight = useMotionValue(400)
+    const stageDiagonal = useTransform([stageWidth, stageHeight], ([w, h]: number[]) => Math.hypot(w, h))
     const scrollLens = useTransform([scrollY, stageDiagonal, scrollMotion], ([scrolled, diagonal, on]: number[]) =>
         on * Math.min(1, Math.max(0, (scrolled - 60) / 420)) * diagonal,
     )
-    const scrollInner = useTransform(scrollLens, (r) => Math.max(0, r - 1))
-    const fullMask = useMotionTemplate`radial-gradient(circle at ${x}px ${y}px, #000 ${inner}px, transparent ${outer}px), radial-gradient(circle at 50% 100%, #000 ${scrollInner}px, transparent ${scrollLens}px)`
+    // The scroll lens grows from the middle of the stage's bottom edge.
+    const scrollX = useTransform(stageWidth, (w) => w / 2)
     const lift = useTransform([scrollY, scrollMotion], ([scrolled, on]: number[]) => on * -80 * Math.min(1, Math.max(0, scrolled / 700)))
 
     useEffect(() => scrollMotion.set(reduce ? 0 : 1), [reduce, scrollMotion])
-
-    // Fully hidden while both lenses are closed: skips painting it, and keeps the real
-    // <h1> (not this decorative copy) as the page's Largest Contentful Paint element.
-    const engineVisibility = useTransform([radius, scrollLens], ([r, s]: number[]) => (r > 0.5 || s > 0.5 ? 'visible' : 'hidden'))
 
     // Measure the engine copy (identical layout, never transformed) and read real
     // computed styles for the spec sheet. Re-runs on resize and theme change.
@@ -115,8 +113,9 @@ export function XrayHeadline({ lines }: { lines: readonly string[] }) {
         if (!stage || !surface) return
 
         function measure() {
-            const box = stage!.getBoundingClientRect()
-            stageDiagonal.set(Math.hypot(box.width, box.height))
+            // Layout size, not the bounding box: the stage lifts with a transform on scroll.
+            stageWidth.set(stage!.offsetWidth)
+            stageHeight.set(stage!.offsetHeight)
             setDims(engineLineRefs.current.map((el) => ({ w: el?.offsetWidth ?? 0, h: el?.offsetHeight ?? 0 })))
             const styles = getComputedStyle(surface!)
             const ratio = contrastRatio(styles.color, getComputedStyle(document.body).backgroundColor)
@@ -138,28 +137,25 @@ export function XrayHeadline({ lines }: { lines: readonly string[] }) {
             resize.disconnect()
             theme.disconnect()
         }
-    }, [stageDiagonal])
+    }, [stageWidth, stageHeight])
 
     // Toggle: open the lens to cover the whole headline, or close it again.
     useEffect(() => {
         const stage = stageRef.current
         if (!stage) return
         if (engineOn) {
-            const { width, height } = stage.getBoundingClientRect()
-            const set = reduce ? 'jump' : 'set'
-            rawX[set](width / 2)
-            rawY[set](height / 2)
-            radius[set](Math.hypot(width, height) / 2 + 40)
-            if (reduce) {
-                x.jump(width / 2)
-                y.jump(height / 2)
-            }
+            const width = stage.offsetWidth
+            const height = stage.offsetHeight
+            x.set(width / 2)
+            y.set(height / 2)
+            if (reduce) radius.jump(Math.hypot(width, height) / 2 + 40)
+            else radius.set(Math.hypot(width, height) / 2 + 40)
         } else if (reduce) {
             radius.jump(0)
         } else {
             radius.set(0)
         }
-    }, [engineOn, reduce, rawX, rawY, radius, x, y])
+    }, [engineOn, reduce, radius, x, y])
 
     // Touch devices get the reveal from the scroll-driven lens above. An automatic sweep
     // on load was removed: it made the decorative Engine copy the page's largest paint.
@@ -167,16 +163,12 @@ export function XrayHeadline({ lines }: { lines: readonly string[] }) {
     function trackPointer(event: PointerEvent<HTMLDivElement>) {
         if (reduce || engineOn || event.pointerType !== 'mouse') return
         const rect = event.currentTarget.getBoundingClientRect()
-        rawX.set(event.clientX - rect.left)
-        rawY.set(event.clientY - rect.top)
+        x.set(event.clientX - rect.left)
+        y.set(event.clientY - rect.top)
     }
 
     function openLens(event: PointerEvent<HTMLDivElement>) {
         if (reduce || engineOn || event.pointerType !== 'mouse') return
-        // Start the lens where the pointer entered instead of sliding in from a corner.
-        const rect = event.currentTarget.getBoundingClientRect()
-        x.jump(event.clientX - rect.left)
-        y.jump(event.clientY - rect.top)
         trackPointer(event)
         radius.set(LENS_RADIUS)
     }
@@ -185,38 +177,20 @@ export function XrayHeadline({ lines }: { lines: readonly string[] }) {
         if (!engineOn) radius.set(0)
     }
 
-    return (
-        <motion.div
-            ref={stageRef}
-            className="relative -m-6 p-6"
-            style={{ y: lift }}
-            onPointerEnter={openLens}
-            onPointerMove={trackPointer}
-            onPointerLeave={closeLens}
-        >
-            <h1 ref={surfaceRef} className="text-hero font-medium">
-                {lines.map((line, index) => (
-                    <span key={line} className="block overflow-hidden pb-[0.08em]">
-                        {/* CSS animation: paints immediately, no wait for hydration. */}
-                        <span className="line-up" style={{ '--delay': `${0.15 + index * 0.12}s` } as CSSProperties}>
-                            {line}
-                        </span>
-                    </span>
-                ))}
-            </h1>
-
-            <motion.div
-                aria-hidden="true"
-                className="blueprint pointer-events-none absolute inset-0 overflow-hidden p-6"
-                style={{ maskImage: fullMask, WebkitMaskImage: fullMask, visibility: engineVisibility }}
-            >
+    function renderEngine(measured: boolean) {
+        return (
+            <>
                 <div className="text-hero font-medium">
                     {lines.map((line, index) => (
                         <span key={line} className="block pb-[0.08em]">
                             <span
-                                ref={(el) => {
-                                    engineLineRefs.current[index] = el
-                                }}
+                                ref={
+                                    measured
+                                        ? (el) => {
+                                              engineLineRefs.current[index] = el
+                                          }
+                                        : undefined
+                                }
                                 className="engine-text relative inline-block outline-1 outline-dashed outline-accent/60"
                             >
                                 {line}
@@ -246,9 +220,87 @@ export function XrayHeadline({ lines }: { lines: readonly string[] }) {
                         </dd>
                     </dl>
                 )}
-            </motion.div>
+            </>
+        )
+    }
+
+    return (
+        <motion.div
+            ref={stageRef}
+            className="relative -m-6 p-6"
+            style={{ y: lift }}
+            onPointerEnter={openLens}
+            onPointerMove={trackPointer}
+            onPointerLeave={closeLens}
+        >
+            <h1 ref={surfaceRef} className="text-hero font-medium">
+                {lines.map((line, index) => (
+                    <span key={line} className="block overflow-hidden pb-[0.08em]">
+                        {/* CSS animation: paints immediately, no wait for hydration. */}
+                        <span className="line-up" style={{ '--delay': `${0.15 + index * 0.12}s` } as CSSProperties}>
+                            {line}
+                        </span>
+                    </span>
+                ))}
+            </h1>
+
+            {/* Pointer lens, then the scroll lens; each shows its own copy of the Engine
+                layer, and only the first one carries the measuring refs. */}
+            <LensWindow cx={x} cy={y} radius={radius} width={stageWidth} height={stageHeight}>
+                {renderEngine(true)}
+            </LensWindow>
+            <LensWindow cx={scrollX} cy={stageHeight} radius={scrollLens} width={stageWidth} height={stageHeight}>
+                {renderEngine(false)}
+            </LensWindow>
 
             <LensRing x={x} y={y} radius={radius} hidden={engineOn} />
+        </motion.div>
+    )
+}
+
+/**
+ * A circular window onto the Engine layer, centred on (cx, cy) in stage coordinates
+ * with the given radius. The window is a fixed LENS_RADIUS circle, translated and
+ * scaled; its contents get the inverse transform, so they line up with the stage
+ * exactly. Hidden while closed, which skips painting it and keeps the real <h1> (not
+ * this decorative copy) as the page's Largest Contentful Paint element.
+ */
+function LensWindow({
+    cx,
+    cy,
+    radius,
+    width,
+    height,
+    children,
+}: {
+    cx: MotionValue<number>
+    cy: MotionValue<number>
+    radius: MotionValue<number>
+    width: MotionValue<number>
+    height: MotionValue<number>
+    children: ReactNode
+}) {
+    // The spring can settle a hair below zero; keep the scale positive and invertible.
+    const scale = useTransform(radius, (r) => Math.max(0.5, r) / LENS_RADIUS)
+    const visibility = useTransform(radius, (r) => (r > 0.5 ? 'visible' : 'hidden'))
+    const left = useTransform(cx, (v) => v - LENS_RADIUS)
+    const top = useTransform(cy, (v) => v - LENS_RADIUS)
+    const innerScale = useTransform(scale, (k) => 1 / k)
+    const innerX = useTransform([cx, scale], ([c, k]: number[]) => LENS_RADIUS - c / k)
+    const innerY = useTransform([cy, scale], ([c, k]: number[]) => LENS_RADIUS - c / k)
+
+    return (
+        <motion.div
+            aria-hidden="true"
+            className="pointer-events-none absolute left-0 top-0 overflow-hidden rounded-full will-change-transform"
+            style={{ width: LENS_RADIUS * 2, height: LENS_RADIUS * 2, x: left, y: top, scale, visibility }}
+        >
+            <motion.div
+                className="blueprint absolute left-0 top-0 p-6 will-change-transform"
+                style={{ width, height, x: innerX, y: innerY, scale: innerScale, originX: 0, originY: 0 }}
+            >
+                {children}
+            </motion.div>
         </motion.div>
     )
 }
