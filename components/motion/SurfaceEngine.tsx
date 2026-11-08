@@ -104,7 +104,7 @@ export default function SurfaceEngine({ project, className }: { project: Project
                         aria-pressed={view === option}
                         onClick={() => setView(option)}
                         className={cn(
-                            'relative rounded-full px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors duration-300',
+                            'hit rounded-full px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] transition-colors duration-300',
                             view === option ? 'text-bg' : 'text-muted hover:text-ink',
                         )}
                     >

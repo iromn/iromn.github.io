@@ -7,6 +7,23 @@
 /* The pinned work deck (components/motion/ProjectIndex.tsx, which mirrors this query in
    JS). Its panel is sized from the viewport height, so short screens such as landscape
    phones get the plain list instead. */
+/* Grows a small link or button's tap area to at least 44px without changing its layout
+   or look. For targets that stand alone; stacked lists get real 44px rows instead, so
+   neighbouring tap areas never overlap. */
+@utility hit {
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: max(100%, 2.75rem);
+    height: max(100%, 2.75rem);
+    transform: translate(-50%, -50%);
+  }
+}
+
 @custom-variant pinned {
   @media (min-width: 48rem) and (min-height: 44rem) and (prefers-reduced-motion: no-preference) {
     @slot;

@@ -34,7 +34,7 @@ export default function TrinketPage() {
                     <div className="flex flex-col gap-8 md:col-span-7">
                         <SectionLink
                             href="/#labs"
-                            className="inline-flex w-fit items-center gap-2 text-sm text-muted transition-colors hover:text-ink"
+                            className="hit inline-flex w-fit items-center gap-2 text-sm text-muted transition-colors hover:text-ink"
                         >
                             <ArrowLeft size={16} />
                             {intro.kicker}

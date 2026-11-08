@@ -13,18 +13,18 @@ export default function Footer() {
             </Container>
             {/* Rule on an inner element so it spans the content width, not the container's padding. */}
             <Container>
-                <div className="flex flex-col gap-6 border-t border-line py-8 text-sm text-muted md:flex-row md:items-center md:justify-between">
+                <div className="flex flex-col gap-2 border-t border-line py-5 md:gap-6 text-sm text-muted md:flex-row md:items-center md:justify-between">
                     <p>
                         © {year} {site.name}
                     </p>
-                    <ul className="flex flex-wrap gap-x-6 gap-y-2">
+                    <ul className="flex flex-wrap gap-x-6">
                         <li>
-                            <Link href="/colophon/" className="transition-colors hover:text-ink">
+                            <Link href="/colophon/" className="inline-flex min-h-11 items-center transition-colors hover:text-ink">
                                 How this site is built
                             </Link>
                         </li>
                         <li>
-                            <a href={`mailto:${site.email}`} className="transition-colors hover:text-ink">
+                            <a href={`mailto:${site.email}`} className="inline-flex min-h-11 items-center transition-colors hover:text-ink">
                                 Email
                             </a>
                         </li>
@@ -34,7 +34,7 @@ export default function Footer() {
                                     href={social.href}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="transition-colors hover:text-ink"
+                                    className="inline-flex min-h-11 items-center transition-colors hover:text-ink"
                                 >
                                     {social.label}
                                 </a>

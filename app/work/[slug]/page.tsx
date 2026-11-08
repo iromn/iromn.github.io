@@ -55,7 +55,7 @@ export default async function CaseStudy({ params }: Params) {
                 <Container className="flex flex-col gap-10">
                     <SectionLink
                         href="/#work"
-                        className="inline-flex w-fit items-center gap-2 text-sm text-muted transition-colors hover:text-ink"
+                        className="hit inline-flex w-fit items-center gap-2 text-sm text-muted transition-colors hover:text-ink"
                     >
                         <ArrowLeft size={16} />
                         All work

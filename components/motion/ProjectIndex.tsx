@@ -91,7 +91,7 @@ export default function ProjectIndex({ projects, heading, skip }: Props) {
                             <SectionLink
                                 href={skip.href}
                                 onClick={focusSkipTarget}
-                                className="group inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-sm font-medium transition-colors duration-300 hover:border-ink"
+                                className="hit group inline-flex h-10 items-center gap-2 rounded-full border border-line px-4 text-sm font-medium transition-colors duration-300 hover:border-ink"
                             >
                                 {skip.label}
                                 <ArrowDown

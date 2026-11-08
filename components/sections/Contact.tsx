@@ -22,26 +22,28 @@ export default function Contact() {
                 </div>
 
                 {/* Desktop: sits level with the heading and stays in view while the form is filled in. */}
-                <Reveal delay={0.15} className="flex flex-col gap-10 md:sticky md:top-28 md:col-span-4 md:col-start-9 md:self-start md:pt-4">
+                <Reveal delay={0.15} className="flex flex-col gap-7 md:sticky md:top-28 md:col-span-4 md:col-start-9 md:self-start md:pt-4">
                     <div className="flex flex-col gap-3">
                         <p className="font-mono text-xs text-muted">{contact.directTitle}</p>
                         <a
                             href={`mailto:${site.email}`}
-                            className="w-fit break-all text-xl font-medium underline decoration-line underline-offset-8 transition-colors hover:decoration-accent md:text-2xl"
+                            className="hit w-fit break-all text-xl font-medium underline decoration-line underline-offset-8 transition-colors hover:decoration-accent md:text-2xl"
                         >
                             {site.email}
                         </a>
                     </div>
-                    <ul className="flex flex-col gap-2">
+                    <ul className="flex flex-col">
                         {socials.map((social) => (
                             <li key={social.href}>
                                 <a
                                     href={social.href}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="text-muted transition-colors hover:text-ink"
+                                    className="inline-flex min-h-11 items-center text-muted transition-colors hover:text-ink"
                                 >
-                                    {social.label} <span className="font-mono text-xs">{social.handle}</span>
+                                    <span>
+                                        {social.label} <span className="font-mono text-xs">{social.handle}</span>
+                                    </span>
                                 </a>
                             </li>
                         ))}

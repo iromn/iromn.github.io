@@ -60,7 +60,7 @@ export default function Nav() {
                 <Container className="flex h-full items-center justify-between gap-6">
                     <SectionLink
                         href="/#top"
-                        className="text-[15px] font-medium tracking-tight"
+                        className="hit text-[15px] font-medium tracking-tight"
                         onClick={() => setOpen(false)}
                     >
                         {site.name}
@@ -71,7 +71,7 @@ export default function Nav() {
                             <SectionLink
                                 key={link.href}
                                 href={link.href}
-                                className="text-[15px] text-muted transition-colors hover:text-ink"
+                                className="hit text-[15px] text-muted transition-colors hover:text-ink"
                             >
                                 {link.label}
                             </SectionLink>
@@ -80,7 +80,7 @@ export default function Nav() {
 
                     <div className="flex items-center gap-2">
                         <ThemeToggle />
-                        <Button href={ctas.contact.href} className="hidden h-10 px-5 text-sm md:inline-flex">
+                        <Button href={ctas.contact.href} className="hit hidden h-10 px-5 text-sm md:inline-flex">
                             {ctas.contact.label}
                         </Button>
                         <button
@@ -90,7 +90,7 @@ export default function Nav() {
                             aria-expanded={open}
                             aria-controls="mobile-menu"
                             aria-label={open ? 'Close menu' : 'Open menu'}
-                            className="inline-flex size-10 items-center justify-center rounded-full hover:bg-surface md:hidden"
+                            className="hit inline-flex size-10 items-center justify-center rounded-full hover:bg-surface md:hidden"
                         >
                             {open ? <X size={20} /> : <List size={20} />}
                         </button>

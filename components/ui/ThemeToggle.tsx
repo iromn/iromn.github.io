@@ -32,7 +32,7 @@ export default function ThemeToggle() {
             type="button"
             onClick={toggle}
             aria-label={theme ? `Switch to ${next} mode` : 'Toggle colour theme'}
-            className="inline-flex size-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-surface active:scale-[0.96]"
+            className="hit inline-flex size-10 items-center justify-center rounded-full text-ink transition-colors hover:bg-surface active:scale-[0.96]"
         >
             {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
         </button>

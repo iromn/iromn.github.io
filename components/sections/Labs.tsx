@@ -63,7 +63,7 @@ export default function Labs() {
                             <Link
                                 href={lab.href}
                                 draggable={false}
-                                className="inline-flex w-fit items-center gap-2 text-[15px] font-medium underline-offset-4 hover:underline"
+                                className="hit inline-flex w-fit items-center gap-2 text-[15px] font-medium underline-offset-4 hover:underline"
                             >
                                 {lab.linkLabel ?? labs.linkLabel}
                                 <ArrowRight size={16} />
@@ -74,7 +74,7 @@ export default function Labs() {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 draggable={false}
-                                className="inline-flex w-fit items-center gap-2 text-[15px] font-medium underline-offset-4 hover:underline"
+                                className="hit inline-flex w-fit items-center gap-2 text-[15px] font-medium underline-offset-4 hover:underline"
                             >
                                 <GithubLogo size={18} />
                                 {lab.linkLabel ?? labs.linkLabel}

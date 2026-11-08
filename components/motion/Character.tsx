@@ -147,7 +147,7 @@ export default function Character({ label, className }: { label: string; classNa
                     type="button"
                     aria-pressed={engine}
                     onClick={() => setEngine((value) => !value)}
-                    className="shrink-0 rounded-full border border-line px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-muted transition-colors hover:border-ink hover:text-ink aria-pressed:border-accent aria-pressed:text-accent"
+                    className="hit shrink-0 rounded-full border border-line px-4 py-1.5 font-mono text-[11px] uppercase tracking-[0.12em] text-muted transition-colors hover:border-ink hover:text-ink aria-pressed:border-accent aria-pressed:text-accent"
                 >
                     {engine ? 'Surface' : 'Engine'}
                 </button>

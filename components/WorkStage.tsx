@@ -14,7 +14,7 @@ export default function WorkStage({ project, panelClassName }: { project: Projec
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-12 sm:items-end">
                 <div className="flex flex-col gap-4 sm:col-span-7">
                     <p className="max-w-[44ch] text-lead text-muted">{project.oneLiner}</p>
-                    <Link href={`/work/${project.slug}`} className="group inline-flex w-fit items-center gap-2 text-[15px] font-medium">
+                    <Link href={`/work/${project.slug}`} className="hit group inline-flex w-fit items-center gap-2 text-[15px] font-medium">
                         <span className="bg-[linear-gradient(currentColor,currentColor)] bg-[length:0%_1px] bg-left-bottom bg-no-repeat pb-0.5 transition-[background-size] duration-500 ease-out-expo group-hover:bg-[length:100%_1px]">
                             Read the case study
                         </span>

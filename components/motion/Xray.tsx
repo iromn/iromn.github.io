@@ -61,7 +61,7 @@ export function XrayToggle({ onLabel, offLabel }: { onLabel: string; offLabel: s
             type="button"
             aria-pressed={engineOn}
             onClick={() => setEngineOn(!engineOn)}
-            className="group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.12em] text-muted transition-colors hover:text-accent aria-pressed:text-accent"
+            className="hit group inline-flex items-center gap-2 font-mono text-xs uppercase tracking-[0.12em] text-muted transition-colors hover:text-accent aria-pressed:text-accent"
         >
             <Blueprint size={16} className="transition-transform duration-500 ease-out-expo group-hover:rotate-90" />
             {engineOn ? offLabel : onLabel}
