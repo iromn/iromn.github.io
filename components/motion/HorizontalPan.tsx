@@ -5,9 +5,11 @@ import { useEffect, useRef, type ReactNode } from 'react'
 /**
  * Pins the section and converts vertical scroll into horizontal travel through its
  * panels, with a progress line scrubbed alongside. From md up and only without
- * reduced motion; otherwise the panels simply stack. GSAP is imported on demand so
- * it never weighs on the initial page load.
+ * reduced motion; otherwise the panels simply stack. GSAP is imported on demand, and
+ * only once the pan can apply, so phones and reduced-motion visitors never load it.
  */
+const PAN = '(min-width: 768px) and (prefers-reduced-motion: no-preference)'
+
 export default function HorizontalPan({ children }: { children: ReactNode }) {
     const wrapRef = useRef<HTMLDivElement>(null)
     const trackRef = useRef<HTMLDivElement>(null)
@@ -22,39 +24,49 @@ export default function HorizontalPan({ children }: { children: ReactNode }) {
         let cancelled = false
         let revert: (() => void) | undefined
 
-        Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(([{ gsap }, { ScrollTrigger }]) => {
-            if (cancelled) return
-            gsap.registerPlugin(ScrollTrigger)
+        // Load GSAP the first time the query matches (on mount, or when the window grows
+        // into it). After that, gsap.matchMedia turns the pan on and off by itself.
+        const query = window.matchMedia(PAN)
+        const load = () => {
+            if (!query.matches) return
+            query.removeEventListener('change', load)
+            Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(([{ gsap }, { ScrollTrigger }]) => {
+                if (cancelled) return
+                gsap.registerPlugin(ScrollTrigger)
 
-            const mm = gsap.matchMedia()
-            mm.add('(min-width: 768px) and (prefers-reduced-motion: no-preference)', () => {
-                // Layout switches to a horizontal track only while the pan is live (see classes below).
-                wrap.dataset.pan = 'on'
-                const distance = () => track.scrollWidth - window.innerWidth
-                const timeline = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: wrap,
-                        start: 'top top',
-                        end: () => `+=${distance()}`,
-                        pin: true,
-                        scrub: 1,
-                        invalidateOnRefresh: true,
-                    },
+                const mm = gsap.matchMedia()
+                mm.add(PAN, () => {
+                    // Layout switches to a horizontal track only while the pan is live (see classes below).
+                    wrap.dataset.pan = 'on'
+                    const distance = () => track.scrollWidth - window.innerWidth
+                    const timeline = gsap.timeline({
+                        scrollTrigger: {
+                            trigger: wrap,
+                            start: 'top top',
+                            end: () => `+=${distance()}`,
+                            pin: true,
+                            scrub: 1,
+                            invalidateOnRefresh: true,
+                        },
+                    })
+                    timeline.to(track, { x: () => -distance(), ease: 'none' }, 0)
+                    timeline.fromTo(bar, { scaleX: 0 }, { scaleX: 1, ease: 'none' }, 0)
+                    return () => {
+                        delete wrap.dataset.pan
+                    }
                 })
-                timeline.to(track, { x: () => -distance(), ease: 'none' }, 0)
-                timeline.fromTo(bar, { scaleX: 0 }, { scaleX: 1, ease: 'none' }, 0)
-                return () => {
-                    delete wrap.dataset.pan
-                }
-            })
 
-            // Fonts change panel widths; measure again once they are in.
-            document.fonts?.ready.then(() => ScrollTrigger.refresh())
-            revert = () => mm.revert()
-        })
+                // Fonts change panel widths; measure again once they are in.
+                document.fonts?.ready.then(() => ScrollTrigger.refresh())
+                revert = () => mm.revert()
+            })
+        }
+        load()
+        query.addEventListener('change', load)
 
         return () => {
             cancelled = true
+            query.removeEventListener('change', load)
             revert?.()
         }
     }, [])

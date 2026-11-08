@@ -47,5 +47,5 @@ export const about = {
         siFastapi,
         siThreedotjs,
         siElevenlabs,
-    ].map((icon) => ({ title: icon.title, path: icon.path })),
+    ].map((icon) => ({ title: icon.title, slug: icon.slug, path: icon.path })),
 }

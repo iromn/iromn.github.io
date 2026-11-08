@@ -27,12 +27,14 @@ export default function About() {
 }
 
 function Toolbelt() {
+    // Each logo path is defined once as a symbol and referenced by both marquee tracks,
+    // so the HTML and the page payload carry one copy instead of two.
     const track = (hidden: boolean) => (
         <ul aria-hidden={hidden || undefined} className="flex shrink-0 items-center gap-14 pr-14">
             {about.toolbelt.map((tool) => (
                 <li key={tool.title} className="flex shrink-0 items-center gap-3 text-muted">
                     <svg viewBox="0 0 24 24" className="size-6 fill-current" aria-hidden="true">
-                        <path d={tool.path} />
+                        <use href={`#tool-${tool.slug}`} />
                     </svg>
                     <span className="text-lg">{tool.title}</span>
                 </li>
@@ -46,6 +48,13 @@ function Toolbelt() {
             aria-label="Tools I work with"
             className="marquee mt-16 overflow-hidden border-y border-line py-8 [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)] md:mt-20"
         >
+            <svg aria-hidden="true" className="absolute size-0 overflow-hidden">
+                {about.toolbelt.map((tool) => (
+                    <symbol key={tool.slug} id={`tool-${tool.slug}`} viewBox="0 0 24 24">
+                        <path d={tool.path} />
+                    </symbol>
+                ))}
+            </svg>
             <div className="marquee-track flex w-max">
                 {track(false)}
                 {track(true)}

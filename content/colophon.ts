@@ -40,12 +40,12 @@ export const colophon = {
     // served with gzip like GitHub Pages (`npm run serve`), median of three runs.
     // Re-measure and update after meaningful changes.
     lighthouse: {
-        measuredOn: '7 November 2026',
+        measuredOn: '9 November 2026',
         method: 'Lighthouse mobile profile with applied throttling, served compressed as in production, median of three runs',
         pages: [
-            { page: 'Home', performance: 86, accessibility: 100, bestPractices: 100, seo: 100 },
+            { page: 'Home', performance: 94, accessibility: 100, bestPractices: 100, seo: 100 },
             { page: 'Case study', performance: 95, accessibility: 100, bestPractices: 100, seo: 100 },
-            { page: 'This page', performance: 95, accessibility: 100, bestPractices: 100, seo: 100 },
+            { page: 'This page', performance: 99, accessibility: 100, bestPractices: 100, seo: 100 },
         ],
     },
 } as const

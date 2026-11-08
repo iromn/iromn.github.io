@@ -7,6 +7,12 @@ const nextConfig: NextConfig = {
   images: {
     unoptimized: true,
   },
+  experimental: {
+    // The whole stylesheet is ~10KB gzipped. Inlining it removes the only render-blocking
+    // request, which otherwise shares the connection with the font preloads and delays
+    // first paint on slow mobile networks.
+    inlineCss: true,
+  },
 };
 
 export default nextConfig;
