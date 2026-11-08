@@ -4,6 +4,15 @@
 /* Theme is driven by data-theme on <html>, set before paint by the script in layout.tsx. */
 @custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
 
+/* The pinned work deck (components/motion/ProjectIndex.tsx, which mirrors this query in
+   JS). Its panel is sized from the viewport height, so short screens such as landscape
+   phones get the plain list instead. */
+@custom-variant pinned {
+  @media (min-width: 48rem) and (min-height: 44rem) and (prefers-reduced-motion: no-preference) {
+    @slot;
+  }
+}
+
 :root {
   --bg: #edefec;
   --surface: #e3e6e2;

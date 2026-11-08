@@ -18,11 +18,11 @@ export default function Work() {
                 skip={{ href: '/#services', label: 'Skip to services' }}
             />
 
-            {/* Mobile and reduced motion: a plain list, one project after another. */}
-            <ol className="mt-10 flex flex-col md:motion-safe:hidden">
+            {/* Mobile, short screens and reduced motion: a plain list, one project after another. */}
+            <ol className="mt-10 flex flex-col pinned:hidden">
                 {cards.map((project, index) => (
                     <li key={project.slug} className="border-t border-line py-10">
-                        {/* From md up (reduced motion only) the title sits beside the stage. */}
+                        {/* From md up (short screens or reduced motion) the title sits beside the stage. */}
                         <Container className="flex flex-col gap-6 md:grid md:grid-cols-12 md:gap-12">
                             <div className="flex flex-col gap-6 md:col-span-4 md:gap-3">
                                 <p className="font-mono text-xs text-muted">

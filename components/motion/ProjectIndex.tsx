@@ -17,10 +17,12 @@ import { cn } from '@/lib/utils'
  * the one beneath recedes. React state only changes when the active project changes,
  * not on every scroll frame.
  *
- * With reduced motion (or below md) nothing pins: the heading renders on its own and
- * Work.tsx shows the plain list instead.
+ * With reduced motion, below md, or on a short screen (where the height-sized panel
+ * would collapse) nothing pins: the heading renders on its own and Work.tsx shows the
+ * plain list instead.
  */
-const PINNED = '(min-width: 768px) and (prefers-reduced-motion: no-preference)'
+// Mirrors the `pinned` variant in app/globals.css; keep the two in step.
+const PINNED = '(min-width: 48rem) and (min-height: 44rem) and (prefers-reduced-motion: no-preference)'
 const subscribe = (callback: () => void) => {
     const query = window.matchMedia(PINNED)
     query.addEventListener('change', callback)
@@ -77,10 +79,10 @@ export default function ProjectIndex({ projects, heading, skip }: Props) {
     return (
         <div
             ref={ref}
-            className="relative md:motion-safe:h-[calc(var(--slots)*100dvh)]"
+            className="relative pinned:h-[calc(var(--slots)*100dvh)]"
             style={{ '--slots': count } as CSSProperties}
         >
-            <div className="md:motion-safe:sticky md:motion-safe:top-0 md:motion-safe:flex md:motion-safe:h-[100dvh] md:motion-safe:flex-col md:motion-safe:pt-[88px]">
+            <div className="pinned:sticky pinned:top-0 pinned:flex pinned:h-[100dvh] pinned:flex-col pinned:pt-[88px]">
                 <div className="mx-auto flex w-full max-w-[1400px] items-end justify-between gap-8 px-4 md:px-8">
                     {heading}
                     {pinned && (
